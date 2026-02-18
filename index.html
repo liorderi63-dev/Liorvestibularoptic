@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>אבחון וטיפול בוורטיגו</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        h2 {
+            color: var(--primary-dark);
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        h3 {
+            color: var(--text);
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        h4 {
+            color: var(--text);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .question {
+            margin-bottom: 25px;
+            padding: 18px;
+            background: var(--bg);
+            border-radius: 12px;
+            border-right: 4px solid var(--primary);
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 12px 16px;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: #eff6ff;
+            transform: translateX(-3px);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+            font-weight: 500;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Heebo', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            background: var(--text-light);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+            margin-left: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: #059669;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .alert {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            border-right: 4px solid var(--warning);
+            color: #92400e;
+        }
+
+        .alert-danger {
+            background: #fee2e2;
+            border-right: 4px solid var(--danger);
+            color: #991b1b;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            border-right: 4px solid var(--secondary);
+            color: #065f46;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            border-right: 4px solid var(--primary);
+            color: #1e40af;
+        }
+
+        .split-view {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .video-section {
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .youtube-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .youtube-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .camera-section {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .camera-section h4 {
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .camera-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 75%;
+            background: #334155;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .camera-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+        }
+
+        .camera-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 1rem;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .camera-controls {
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        .camera-controls button {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            margin: 5px;
+        }
+
+        .camera-status {
+            padding: 8px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border-radius: 6px;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .instructions {
+            background: #fffbeb;
+            border-right: 4px solid var(--warning);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .instructions ol {
+            margin-right: 20px;
+            margin-top: 8px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.5s ease;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 16px;
+            margin-top: 16px;
+        }
+
+        .result-card h3 {
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .diagnosis-box {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 12px;
+        }
+
+        .diagnosis-box p {
+            margin-bottom: 8px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .split-view {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 1.75rem;
+            }
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div class="card" id="welcomeScreen">
+            <h1>🏥 אפליקציית אבחון וטיפול בוורטיגו</h1>
+            <p class="subtitle">מערכת מקצועית לאבחון עצמי וטיפול בסחרחורת הנגרמת משינוי תנוחה (BPPV)</p>
+            
+            <div class="alert alert-info">
+                <strong>שימו לב:</strong> אפליקציה זו מיועדת למטופלים המבקשים הערכה ראשונית. במקרה של תסמינים חמורים או מתמשכים, יש לפנות לרופא.
+            </div>
+
+            <div class="alert alert-warning">
+                <strong>התוויות נגד:</strong> אל תשתמשו באפליקציה אם יש לכם חבלת ראש חדשה, כאבי צוואר חמורים, או הפרעות נוירולוגיות ידועות.
+            </div>
+
+            <button class="btn btn-primary" onclick="startAssessment()">התחל אבחון</button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="card hidden" id="progressCard">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Step 1: Anamnesis -->
+        <div class="card hidden" id="anamnesis">
+            <h2>שלב 1: אנמנזה רפואית</h2>
+            <p class="subtitle">אנא ענו על השאלות הבאות בצורה מדויקת ככל האפשר</p>
+            <div id="anamnesisQuestions"></div>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="completeAnamnesis()" id="anamnesisBtn" disabled>המשך לאבחון</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Diagnosis -->
+        <div class="card hidden" id="diagnosis">
+            <h2>שלב 2: בדיקה אבחנתית</h2>
+            <div id="diagnosisContent"></div>
+        </div>
+
+        <!-- Step 3: Treatment -->
+        <div class="card hidden" id="treatment">
+            <h2>שלב 3: טיפול</h2>
+            <div id="treatmentContent"></div>
+        </div>
+
+        <!-- Step 4: Exercises -->
+        <div class="card hidden" id="exercises">
+            <h2>שלב 4: תרגול ביתי</h2>
+            <div id="exercisesContent"></div>
+        </div>
+
+        <!-- Results -->
+        <div class="card hidden" id="results">
+            <h2>סיכום ותוצאות</h2>
+            <div id="resultsContent"></div>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="restartApp()">התחל מחדש</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // App State
+        let appState = {
+            currentStep: 0,
+            anamnesis: {},
+            diagnosis: {
+                dixHallpikeRight: null,
+                dixHallpikeLeft: null,
+                rollTestRight: null,
+                rollTestLeft: null,
+                affectedCanal: null,
+                affectedSide: null,
+                type: null
+            },
+            treatment: {
+                maneuverPerformed: null,
+                successfulTreatment: false
+            },
+            cameraStream: null
+        };
+
+        // YouTube Video IDs - הסרטונים שלך!
+        const youtubeVideos = {
+            dixHallpike: 'VmCItD9nDfY',
+            rollTest: 'ns8XZ4rKiJc',
+            epley: 'VmCItD9nDfY',
+            semont: '-omE6Vs6ZuU',
+            deepHeadHang: 'ijyx5tVeaVo',
+            bbq: 'HCXU4IcTpr4',
+            gufoni: 'N7LOSV-9DYE'
+        };
+
+        // Anamnesis Questions
+        const anamnesisQuestions = [
+            {
+                id: 'firstTime',
+                text: 'האם זו פעם ראשונה שיש לך וורטיגו או אירוע חוזר?',
+                options: ['פעם ראשונה', 'אירוע חוזר']
+            },
+            {
+                id: 'duration',
+                text: 'כמה זמן אתה סובל מוורטיגו (מתי התחילו הסימפטומים)?',
+                options: ['ימים', 'שבועות', 'חודשים']
+            },
+            {
+                id: 'specificMovement',
+                text: 'האם יש תנועה ספציפית שגורמת לסחרחורת?',
+                options: ['סיבוב לצד ימין', 'סיבוב לצד שמאל', 'הרמת ראש', 'כיפוף ראש', 'אין תנועה ספציפית']
+            },
+            {
+                id: 'attackDuration',
+                text: 'כמה זמן נמשך כל התקף?',
+                options: ['שניות', 'דקות', 'שעות', 'ימים']
+            },
+            {
+                id: 'onset',
+                text: 'האם ההתקף הוא פתאומי או הדרגתי?',
+                options: ['פתאומי', 'הדרגתי']
+            },
+            {
+                id: 'trigger',
+                text: 'האם הייתה מכה/חבלה/טיפול שיניים אגרסיבי/טיפול כימי או וירוס בסמוך לתחילת הסימפטומים?',
+                options: ['מכה/חבלת ראש', 'טיפול שיניים', 'חום/וירוס', 'טיפול כימי', 'לא היה דבר כזה']
+            }
+        ];
+
+        // Camera Functions
+        async function startCamera(videoElementId) {
+            try {
+                console.log('Requesting camera access...');
+                
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    alert('הדפדפן שלך לא תומך בגישה למצלמה.');
+                    updateCameraStatus('הדפדפן לא תומך', 'error');
+                    return false;
+                }
+                
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        facingMode: 'user',
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false
+                });
+                
+                const videoElement = document.getElementById(videoElementId);
+                if (videoElement) {
+                    videoElement.srcObject = stream;
+                    
+                    videoElement.onloadedmetadata = () => {
+                        videoElement.play().then(() => {
+                            appState.cameraStream = stream;
+                            const placeholder = videoElement.parentElement.querySelector('.camera-placeholder');
+                            if (placeholder) placeholder.style.display = 'none';
+                            updateCameraStatus('המצלמה פעילה ✓', 'success');
+                        }).catch(err => {
+                            console.error('Error playing video:', err);
+                            updateCameraStatus('שגיאה בהפעלה', 'error');
+                        });
+                    };
+                    
+                    return true;
+                }
+            } catch (error) {
+                console.error('Camera error:', error);
+                let errorMsg = '';
+                
+                if (error.name === 'NotAllowedError') {
+                    errorMsg = 'גישה נדחתה. אנא אפשר גישה למצלמה בהגדרות Safari.';
+                } else if (error.name === 'NotFoundError') {
+                    errorMsg = 'לא נמצאה מצלמה במכשיר.';
+                } else if (error.name === 'NotReadableError') {
+                    errorMsg = 'המצלמה בשימוש על ידי אפליקציה אחרת.';
+                } else {
+                    errorMsg = 'שגיאה: ' + (error.message || 'לא ידועה');
+                }
+                
+                updateCameraStatus(errorMsg, 'error');
+                alert(errorMsg);
+                return false;
+            }
+        }
+
+        function stopCamera() {
+            if (appState.cameraStream) {
+                appState.cameraStream.getTracks().forEach(track => track.stop());
+                appState.cameraStream = null;
+                updateCameraStatus('המצלמה כבויה', 'error');
+            }
+        }
+
+        function updateCameraStatus(message, type) {
+            const statusElements = document.querySelectorAll('.camera-status');
+            statusElements.forEach(el => {
+                el.textContent = message;
+                el.style.background = type === 'success' ? 'rgba(16, 185, 129, 0.8)' : 'rgba(239, 68, 68, 0.8)';
+            });
+        }
+
+        function startAssessment() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('progressCard').classList.remove('hidden');
+            document.getElementById('anamnesis').classList.remove('hidden');
+            updateProgress(25);
+            renderAnamnesisQuestions();
+        }
+
+        function renderAnamnesisQuestions() {
+            const container = document.getElementById('anamnesisQuestions');
+            container.innerHTML = '';
+
+            anamnesisQuestions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+
+                let html = `
+                    <div class="question-text">${index + 1}. ${q.text}</div>
+                    <div class="options">
+                `;
+
+                q.options.forEach(option => {
+                    html += `
+                        <div class="option" onclick="selectOption('${q.id}', '${option}', this)">
+                            ${option}
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+                questionDiv.innerHTML = html;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function selectOption(questionId, value, element) {
+            const siblings = element.parentElement.children;
+            Array.from(siblings).forEach(sib => sib.classList.remove('selected'));
+            element.classList.add('selected');
+            appState.anamnesis[questionId] = value;
+            
+            const allAnswered = anamnesisQuestions.every(q => appState.anamnesis[q.id]);
+            document.getElementById('anamnesisBtn').disabled = !allAnswered;
+        }
+
+        function completeAnamnesis() {
+            if (appState.anamnesis.trigger === 'חום/וירוס') {
+                alert('⚠️ על סמך התסמינים, ייתכן שמדובר בנויריטיס וסטיבולרית. מומלץ לפנות לרופא.');
+            }
+
+            document.getElementById('anamnesis').classList.add('hidden');
+            document.getElementById('diagnosis').classList.remove('hidden');
+            updateProgress(50);
+            startDiagnosis();
+        }
+
+        function startDiagnosis() {
+            const content = document.getElementById('diagnosisContent');
+            content.innerHTML = `
+                <div class="alert alert-info">
+                    <strong>שלב האבחון:</strong> כעת נבצע בדיקות Dix-Hallpike לשני הצדדים.
+                </div>
+                
+                <div class="instructions">
+                    <h4>הוראות בטיחות:</h4>
+                    <ol>
+                        <li>ודאו שאתם במקום בטוח, רצוי עם מישהו לידכם</li>
+                        <li>אל תבצעו אם יש כאבי צוואר חמורים</li>
+                        <li>שמרו על העיניים פתוחות במהלך הבדיקה</li>
+                    </ol>
+                </div>
+
+                <button class="btn btn-primary" onclick="performDixHallpike('right')">התחל בדיקת Dix-Hallpike לצד ימין</button>
+            `;
+        }
+
+        function performDixHallpike(side) {
+            const content = document.getElementById('diagnosisContent');
+            const sideHeb = side === 'right' ? 'ימין' : 'שמאל';
+            
+            content.innerHTML = `
+                <h3>בדיקת Dix-Hallpike לצד ${sideHeb}</h3>
+                
+                <div class="split-view">
+                    <div class="video-section">
+                        <h4>🎥 הדגמת הבדיקה:</h4>
+                        <div class="youtube-container">
+                            <iframe 
+                                src="https://www.youtube.com/embed/${youtubeVideos.dixHallpike}?rel=0&modestbranding=1" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                    
+                    <div class="camera-section">
+                        <h4>📹 המצלמה שלך:</h4>
+                        <div class="camera-container">
+                            <video id="cameraFeed${side}" autoplay playsinline muted></video>
+                            <div class="camera-placeholder">
+                                <div style="font-size: 2rem;">📷</div>
+                                <div style="margin-top: 10px;">לחץ "הפעל מצלמה"</div>
+                                <div style="font-size: 0.85rem; margin-top: 5px; opacity: 0.8;">כוון לעיניים שלך</div>
+                            </div>
+                        </div>
+                        <div class="camera-controls">
+                            <button class="btn btn-secondary" onclick="startCamera('cameraFeed${side}')">הפעל מצלמה</button>
+                            <button class="btn btn-secondary" onclick="stopCamera()">כבה</button>
+                        </div>
+                        <div class="camera-status">המצלמה כבויה</div>
+                    </div>
+                </div>
+
+                <div class="instructions">
+                    <h4>שלבי ביצוע:</h4>
+                    <ol>
+                        <li>שב על קצה המיטה</li>
+                        <li>סובב ראש 45° ל${sideHeb}</li>
+                        <li>שכב מהר לאחור עם ראש 20° אחורה</li>
+                        <li>עיניים פתוחות - המתן 30 שניות</li>
+                    </ol>
+                </div>
+
+                <div class="alert alert-warning">
+                    <strong>האם הרגשת סחרחורת?</strong>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="recordDixHallpike('${side}', true)">כן, הרגשתי</button>
+                    <button class="btn btn-secondary" onclick="recordDixHallpike('${side}', false)">לא</button>
+                </div>
+            `;
+        }
+
+        function recordDixHallpike(side, hasVertigo) {
+            appState.diagnosis[`dixHallpike${side.charAt(0).toUpperCase() + side.slice(1)}`] = hasVertigo;
+
+            if (hasVertigo) {
+                stopCamera();
+                const sideHeb = side === 'right' ? 'ימין' : 'שמאל';
+                
+                const content = document.getElementById('diagnosisContent');
+                content.innerHTML = `
+                    <div class="alert alert-info">
+                        מצוין! זיהינו סחרחורת. כעת נקבע את כיוון תנועת העיניים.
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">לאיזה כיוון הרגשת שהעולם מסתובב?</div>
+                        <div class="options">
+                            <div class="option" onclick="recordNystagmusDirection('${side}', 'up')">למעלה ו${sideHeb}</div>
+                            <div class="option" onclick="recordNystagmusDirection('${side}', 'down')">למטה ו${sideHeb}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                stopCamera();
+                if (side === 'right') {
+                    performDixHallpike('left');
+                } else {
+                    performRollTest();
+                }
+            }
+        }
+
+        function recordNystagmusDirection(side, direction) {
+            if (direction === 'up') {
+                appState.diagnosis.affectedCanal = 'posterior';
+            } else {
+                appState.diagnosis.affectedCanal = 'anterior';
+            }
+            appState.diagnosis.affectedSide = side;
+
+            if (appState.anamnesis.onset === 'פתאומי') {
+                appState.diagnosis.type = 'canalithiasis';
+            } else {
+                appState.diagnosis.type = 'cupulolithiasis';
+            }
+
+            proceedToTreatment();
+        }
+
+        function performRollTest() {
+            const content = document.getElementById('diagnosisContent');
+            
+            content.innerHTML = `
+                <h3>בדיקת Roll Test</h3>
+                
+                <div class="alert alert-info">
+                    בדיקת Dix-Hallpike שלילית. כעת נבדוק את התעלה האופקית.
+                </div>
+
+                <div class="split-view">
+                    <div class="video-section">
+                        <h4>🎥 הדגמת הבדיקה:</h4>
+                        <div class="youtube-container">
+                            <iframe 
+                                src="https://www.youtube.com/embed/${youtubeVideos.rollTest}?rel=0&modestbranding=1" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                    
+                    <div class="camera-section">
+                        <h4>📹 המצלמה שלך:</h4>
+                        <div class="camera-container">
+                            <video id="cameraFeedRoll" autoplay playsinline muted></video>
+                            <div class="camera-placeholder">
+                                <div style="font-size: 2rem;">📷</div>
+                                <div style="margin-top: 10px;">לחץ "הפעל מצלמה"</div>
+                            </div>
+                        </div>
+                        <div class="camera-controls">
+                            <button class="btn btn-secondary" onclick="startCamera('cameraFeedRoll')">הפעל מצלמה</button>
+                            <button class="btn btn-secondary" onclick="stopCamera()">כבה</button>
+                        </div>
+                        <div class="camera-status">המצלמה כבויה</div>
+                    </div>
+                </div>
+
+                <div class="instructions">
+                    <h4>שלבי ביצוע:</h4>
+                    <ol>
+                        <li>שכב על הגב, ראש 30° למעלה</li>
+                        <li>סובב ראש ימינה במהירות</li>
+                        <li>המתן 30 שניות</li>
+                        <li>חזור למרכז, סובב שמאלה</li>
+                        <li>המתן 30 שניות</li>
+                    </ol>
+                </div>
+
+                <button class="btn btn-primary" onclick="performRollTestSide('right')">התחל בבדיקה</button>
+            `;
+        }
+
+        function performRollTestSide(side) {
+            stopCamera();
+            const sideHeb = side === 'right' ? 'ימין' : 'שמאל';
+            
+            const content = document.getElementById('diagnosisContent');
+            content.innerHTML = `
+                <h3>Roll Test - צד ${sideHeb}</h3>
+                
+                <div class="alert alert-warning">
+                    האם הרגשת סחרחורת כאשר סובבת ל${sideHeb}?
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="recordRollTest('${side}', true)">כן</button>
+                    <button class="btn btn-secondary" onclick="recordRollTest('${side}', false)">לא</button>
+                </div>
+            `;
+        }
+
+        function recordRollTest(side, hasVertigo) {
+            appState.diagnosis[`rollTest${side.charAt(0).toUpperCase() + side.slice(1)}`] = hasVertigo;
+
+            if (hasVertigo) {
+                const content = document.getElementById('diagnosisContent');
+                
+                content.innerHTML = `
+                    <div class="question">
+                        <div class="question-text">האם הסחרחורת הופיעה מיד או לאחר כמה שניות?</div>
+                        <div class="options">
+                            <div class="option" onclick="setLatency('immediate')">מיידי</div>
+                            <div class="option" onclick="setLatency('delayed')">לאחר 2-20 שניות</div>
+                        </div>
+                    </div>
+
+                    <div class="question" id="durationQuestion" style="display:none;">
+                        <div class="question-text">כמה זמן נמשכה?</div>
+                        <div class="options">
+                            <div class="option" onclick="setDuration('short')">פחות מדקה</div>
+                            <div class="option" onclick="setDuration('long')">יותר מדקה</div>
+                        </div>
+                    </div>
+
+                    <div class="question" id="directionQuestion" style="display:none;">
+                        <div class="question-text">לאיזה כיוון?</div>
+                        <div class="options">
+                            <div class="option" onclick="finalizeRollTest('${side}', 'toward')">כלפי הרצפה</div>
+                            <div class="option" onclick="finalizeRollTest('${side}', 'away')">כלפי התקרה</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                if (side === 'right') {
+                    performRollTestSide('left');
+                } else {
+                    if (appState.diagnosis.rollTestRight && appState.diagnosis.rollTestLeft) {
+                        showEmergencyAlert();
+                    } else {
+                        showNoVertigoFound();
+                    }
+                }
+            }
+        }
+
+        let rollTestData = { latency: null, duration: null };
+
+        function setLatency(value) {
+            rollTestData.latency = value;
+            document.getElementById('durationQuestion').style.display = 'block';
+        }
+
+        function setDuration(value) {
+            rollTestData.duration = value;
+            document.getElementById('directionQuestion').style.display = 'block';
+        }
+
+        function finalizeRollTest(side, direction) {
+            appState.diagnosis.affectedCanal = 'horizontal';
+            
+            if (rollTestData.latency === 'immediate' && rollTestData.duration === 'long') {
+                appState.diagnosis.type = 'cupulolithiasis';
+            } else {
+                appState.diagnosis.type = 'canalithiasis';
+            }
+
+            if (appState.diagnosis.type === 'cupulolithiasis' && direction === 'away') {
+                appState.diagnosis.affectedSide = side;
+            } else if (appState.diagnosis.type === 'canalithiasis' && direction === 'toward') {
+                appState.diagnosis.affectedSide = side;
+            }
+
+            proceedToTreatment();
+        }
+
+        function showEmergencyAlert() {
+            stopCamera();
+            const content = document.getElementById('diagnosisContent');
+            content.innerHTML = `
+                <div class="alert alert-danger">
+                    <h3 style="color: #991b1b;">⚠️ התראת חירום!</h3>
+                    <p style="margin-top: 10px; font-size: 1.05rem;">
+                        ניסטגמוס בשני הכיוונים - חשד לבעיה מרכזית!
+                    </p>
+                    <p style="margin-top: 12px; font-size: 1.15rem; font-weight: 700;">
+                        פנה מיד למיון!
+                    </p>
+                </div>
+
+                <button class="btn btn-danger" onclick="window.location.reload()">סיום</button>
+            `;
+        }
+
+        function showNoVertigoFound() {
+            stopCamera();
+            const content = document.getElementById('diagnosisContent');
+            content.innerHTML = `
+                <div class="alert alert-info">
+                    <h3>לא זוהה BPPV</h3>
+                    <p style="margin-top: 10px;">
+                        הבדיקות לא הראו סימנים ל-BPPV. מומלץ לפנות לרופא להערכה נוספת.
+                    </p>
+                </div>
+
+                <button class="btn btn-primary" onclick="restartApp()">התחל מחדש</button>
+            `;
+        }
+
+        function proceedToTreatment() {
+            stopCamera();
+            document.getElementById('diagnosis').classList.add('hidden');
+            document.getElementById('treatment').classList.remove('hidden');
+            updateProgress(75);
+            showTreatment();
+        }
+
+        function showTreatment() {
+            const content = document.getElementById('treatmentContent');
+            const { affectedCanal, affectedSide, type } = appState.diagnosis;
+            const sideHeb = affectedSide === 'right' ? 'ימין' : 'שמאל';
+            
+            let maneuverName = '';
+            let maneuverSteps = [];
+            let videoId = '';
+
+            if (affectedCanal === 'posterior') {
+                if (type === 'canalithiasis') {
+                    maneuverName = 'Epley';
+                    videoId = youtubeVideos.epley;
+                    maneuverSteps = [
+                        'ישיבה על המיטה',
+                        `סיבוב ראש 45° ל${sideHeb}`,
+                        'שכיבה לאחור - המתן + דקה',
+                        'סיבוב ראש 90° לצד השני - המתן + דקה',
+                        'סיבוב גוף - המתן + דקה',
+                        'חזרה לישיבה'
+                    ];
+                } else {
+                    maneuverName = 'Semont';
+                    videoId = youtubeVideos.semont;
+                    maneuverSteps = [
+                        'ישיבה',
+                        `סיבוב ראש להפוך`,
+                        `שכיבה ל${sideHeb} - המתן + דקה`,
+                        'מעבר מהיר לצד השני - המתן + דקה',
+                        'חזרה לישיבה'
+                    ];
+                }
+            } else if (affectedCanal === 'anterior') {
+                if (type === 'canalithiasis') {
+                    maneuverName = 'Deep Head Hang';
+                    videoId = youtubeVideos.deepHeadHang;
+                    maneuverSteps = [
+                        'ישיבה',
+                        'שכיבה עם אקסטנשן עמוק - המתן + דקה',
+                        'פלקשן עמוק - המתן + דקה',
+                        'חזרה לישיבה'
+                    ];
+                } else {
+                    maneuverName = 'Semont (תעלה קדמית)';
+                    videoId = youtubeVideos.semont;
+                    maneuverSteps = [
+                        `סיבוב ראש ל${sideHeb}`,
+                        'שכיבה הצידה - המתן + דקה',
+                        'מעבר לצד השני - המתן + דקה',
+                        'חזרה לישיבה'
+                    ];
+                }
+            } else {
+                if (type === 'canalithiasis') {
+                    maneuverName = 'BBQ Roll';
+                    videoId = youtubeVideos.bbq;
+                    maneuverSteps = [
+                        `שכיבה על ${sideHeb}`,
+                        'סיבוב 90° - המתן + דקה',
+                        'סיבוב 90° - המתן + דקה',
+                        'סיבוב 90° - המתן + דקה',
+                        'ישיבה'
+                    ];
+                } else {
+                    maneuverName = 'Gufoni';
+                    videoId = youtubeVideos.gufoni;
+                    maneuverSteps = [
+                        'ישיבה',
+                        `שכיבה ל${sideHeb} - המתן דקתיים`,
+                        'סיבוב ראש למטה - המתן דקה',
+                        'חזרה לישיבה'
+                    ];
+                }
+            }
+
+            content.innerHTML = `
+                <div class="result-card">
+                    <h3>📋 אבחנה</h3>
+                    <div class="diagnosis-box">
+                        <p><strong>תעלה:</strong> ${affectedCanal === 'posterior' ? 'אחורית' : affectedCanal === 'anterior' ? 'קדמית' : 'אופקית'}</p>
+                        <p><strong>צד:</strong> ${sideHeb}</p>
+                        <p><strong>סוג:</strong> ${type === 'canalithiasis' ? 'Canalithiasis' : 'Cupulolithiasis'}</p>
+                    </div>
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>המנובר המומלץ:</strong> ${maneuverName}
+                </div>
+
+                <div class="video-section">
+                    <h4>🎥 הדגמת ${maneuverName}:</h4>
+                    <div class="youtube-container">
+                        <iframe 
+                            src="https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <div class="instructions">
+                    <h4>שלבים:</h4>
+                    <ol>
+                        ${maneuverSteps.map(step => `<li>${step}</li>`).join('')}
+                    </ol>
+                </div>
+
+                <div class="alert alert-warning">
+                    <strong>המתן</strong> בכל שלב עד שתעבור הסחרחורת!
+                </div>
+
+                <button class="btn btn-primary" onclick="completeTreatment()">ביצעתי - בדוק תוצאות</button>
+            `;
+
+            appState.treatment.maneuverPerformed = maneuverName;
+        }
+
+        function completeTreatment() {
+            const content = document.getElementById('treatmentContent');
+            
+            content.innerHTML = `
+                <div class="alert alert-info">
+                    בדוק שוב - האם עדיין יש סחרחורת?
+                </div>
+
+                <div class="question">
+                    <div class="question-text">האם עדיין יש סחרחורת?</div>
+                    <div class="options">
+                        <div class="option" onclick="checkTreatmentResult(true)">כן, עדיין</div>
+                        <div class="option" onclick="checkTreatmentResult(false)">לא, נעלמה!</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function checkTreatmentResult(stillHasVertigo) {
+            if (stillHasVertigo) {
+                const content = document.getElementById('treatmentContent');
+                content.innerHTML = `
+                    <div class="alert alert-warning">
+                        עדיין יש סחרחורת. נסה שוב.
+                    </div>
+
+                    <button class="btn btn-primary" onclick="showTreatment()">בצע שוב</button>
+                    <button class="btn btn-secondary" onclick="proceedToExercises()">המשך לתרגילים</button>
+                `;
+            } else {
+                appState.treatment.successfulTreatment = true;
+                proceedToExercises();
+            }
+        }
+
+        function proceedToExercises() {
+            document.getElementById('treatment').classList.add('hidden');
+            document.getElementById('exercises').classList.remove('hidden');
+            updateProgress(90);
+            showExercises();
+        }
+
+        function showExercises() {
+            const content = document.getElementById('exercisesContent');
+            
+            content.innerHTML = `
+                <div class="alert alert-info">
+                    תרגילי בית יתווספו בגרסה הבאה.
+                </div>
+
+                <button class="btn btn-primary" onclick="showResults()">סיכום</button>
+            `;
+        }
+
+        function showResults() {
+            document.getElementById('exercises').classList.add('hidden');
+            document.getElementById('results').classList.remove('hidden');
+            updateProgress(100);
+
+            const content = document.getElementById('resultsContent');
+            const { affectedCanal, affectedSide, type } = appState.diagnosis;
+            const { maneuverPerformed, successfulTreatment } = appState.treatment;
+            
+            content.innerHTML = `
+                <div class="result-card">
+                    <h3>✅ הושלם!</h3>
+                </div>
+
+                <div class="alert alert-success">
+                    <h4>סיכום:</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>תעלה:</strong> ${affectedCanal === 'posterior' ? 'אחורית' : affectedCanal === 'anterior' ? 'קדמית' : 'אופקית'}</li>
+                        <li><strong>צד:</strong> ${affectedSide === 'right' ? 'ימין' : 'שמאל'}</li>
+                        <li><strong>סוג:</strong> ${type}</li>
+                        <li><strong>טיפול:</strong> ${maneuverPerformed}</li>
+                        <li><strong>תוצאה:</strong> ${successfulTreatment ? '✓ הצליח' : 'נדרש טיפול נוסף'}</li>
+                    </ul>
+                </div>
+
+                <div class="alert alert-info">
+                    <h4>המלצות:</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li>המשך תרגילי בית</li>
+                        <li>הימנע מתנועות פתאומיות ל-48 שעות</li>
+                        <li>אם חוזר - חזור על המנובר</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        function updateProgress(percentage) {
+            document.getElementById('progressFill').style.width = percentage + '%';
+        }
+
+        function restartApp() {
+            stopCamera();
+            window.location.reload();
+        }
+
+        window.addEventListener('beforeunload', () => {
+            stopCamera();
+        });
+    </script>
+</body>
+</html>
